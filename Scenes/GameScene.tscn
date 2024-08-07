@@ -11,32 +11,59 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dcm61")
 
-[node name="Label" type="Label" parent="."]
+[node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -102.0
-offset_top = -44.5
-offset_right = 102.0
-offset_bottom = 44.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.937255, 0.937255, 0.898039, 1)
 
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 0.2
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 0.2
 offset_left = -128.0
-offset_top = -15.5
 offset_right = 128.0
-offset_bottom = 15.5
+offset_bottom = 31.0
 grow_horizontal = 2
-grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/caret_color = Color(1, 0.752941, 0, 1)
+alignment = 1
+
+[node name="pointsControl" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.2
+anchor_top = 0.08
+anchor_right = 0.8
+anchor_bottom = 0.18
+grow_horizontal = 2
+
+[node name="backgroundBar" type="ColorRect" parent="pointsControl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.266575, 0.266575, 0.266575, 1)
+
+[node name="scoreBar" type="Polygon2D" parent="pointsControl"]
+visible = false
+color = Color(1, 0.752941, 0, 1)
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)
+
+[node name="ProgressBar" type="ProgressBar" parent="pointsControl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.05
+anchor_right = 0.98
+anchor_bottom = 0.95
+max_value = 8.0
+step = 1.0
+show_percentage = false
 
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]

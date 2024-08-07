@@ -32,6 +32,10 @@ var stringLength := 0
 
 var maxScore := 0
 
+var speed := 0.05
+
+var scoreTier := ""
+
 
 
 
@@ -68,13 +72,16 @@ func _ready():
 	print("count of words: " + str(todaysWordsArray.size()))
 	print("max score: " + str(maxScore))
 	
+	await get_tree().process_frame
+	$LineEdit.grab_focus()
+	
 
 	
 
 
 
 
-func _process(_delta):
+func _physics_process(_delta):
 	
 	
 	if Input.is_action_just_pressed("ui_text_submit"):
@@ -87,18 +94,97 @@ func _process(_delta):
 			$LineEdit.text = ""
 			score += assignPoints(stringLength, submission)
 			print(score)
-			return true
+			print(float(score)/float(maxScore))
+			scoreTier = getTier(score, maxScore)
+			tierAssign(scoreTier, speed, _delta)
+			print($pointsControl/scoreBar.polygon)
 		elif submission in alreadyGuessed:
 			print("already guessed")
 			$LineEdit.text = ""
 		else:
 			print("the submission is not in todaysWordsArray")
 			$LineEdit.text = ""
+	
 		
 		
 
+#func _physics_process(delta):
+	##if scoreBar length is less than current tier status, animate bar to fill to new status
+	#pass
 
 ############## FUNCTIONS ###############
+
+
+func getTier(currentScore, possibleScore):
+	var scorePercent : float = float(currentScore)/float(possibleScore)
+	var tier := ""
+	if scorePercent < .02:
+		tier = "Beginner"
+	elif scorePercent < .05:
+		tier = "Good Start"
+	elif scorePercent < .08:
+		tier = "Moving Up"
+	elif scorePercent < .15:
+		tier = "Good"
+	elif scorePercent < .25:
+		tier = "Solid"
+	elif scorePercent < .40:
+		tier = "Nice"
+	elif scorePercent < .5:
+		tier = "Great"
+	elif scorePercent < .7:
+		tier = "Amazing"
+	else:
+		tier = "Genius"
+	return tier
+
+	
+
+# Determines how close player is to winning
+
+func tierAssign(tier, speedVar, delta):
+	var newtier : float = $pointsControl.size.x/8.0
+	var barHeight : float = $pointsControl.size.y
+	var barLength := 0.0
+	match tier:
+		"Beginner":
+			print("0" + tier)
+			print(newtier)
+			var tween = get_tree().create_tween()
+			tween.tween_property($pointsControl/ProgressBar, "Value", 1, 1)#.set_trans(Tween.TRANS_QUAD)
+			#while barLength < newtier:
+				#barLength += speedVar * delta
+				##$pointsControl/scoreBar.set_polygon(PackedVector2Array([Vector2(0, 0),
+								  ##Vector2(barLength, 0),
+								  ##Vector2(barLength, barHeight),
+								  ##Vector2(0, barHeight)
+								##]))
+				#$pointsControl/scoreBar.polygon = PackedVector2Array([Vector2(0, 0),
+								  #Vector2(barLength, 0),
+								  #Vector2(barLength, barHeight),
+								  #Vector2(0, barHeight)
+								#])
+		"Good Start":
+			print("1" + tier)
+			#while $pointsControl/scoreBar.anchor_right < barLength:
+				##$pointsControl/scoreBar.anchor_right = barLength
+				#$pointsControl/scoreBar.transform().x += speedVar
+		"Moving Up":
+			print("2" + tier)
+		"Good":
+			print("3" + tier)
+		"Solid":
+			print("4" + tier)
+		"Nice":
+			print("5" + tier)
+		"Great":
+			print("6" + tier)
+		"Amazing":
+			print("7" + tier)
+		"Genius":
+			print("8" + tier)
+
+
 
 # Filter Pangrams out from the array of all words and append them to another array
 func filterPangrams(jsonArray, newArray):
@@ -176,3 +262,17 @@ func calculatePossiblePoints(array, pangramArray):
 			print(str(i) + ": " + str(array[i].length()) + " points")
 	return total
 
+
+# Spelling Bee ranking tiers from Words Rated website
+# https://wordsrated.com/nyt-spelling-bee-game-rules-and-help/
+#Rank	Percentage of points needed
+#Beginner	0%
+#Good start	2%
+#Moving up	5%
+#Good	8%
+#Solid	15%
+#Nice	25%
+#Great	40%
+#Amazing	50%
+#Genius	70%
+#Queen Bee (hidden rank)	100%
