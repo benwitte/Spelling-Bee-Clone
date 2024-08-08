@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ceclpxr2grtwr"]
+[gd_scene load_steps=3 format=3 uid="uid://ceclpxr2grtwr"]
 
 [ext_resource type="Script" path="res://Scripts/GameScene.gd" id="1_dcm61"]
+[ext_resource type="PackedScene" uid="uid://dao1t6ynvr7je" path="res://Assets/textureProgressBar.tscn" id="2_4r3lk"]
 
 [node name="GameScene" type="Control"]
 layout_mode = 3
@@ -44,26 +45,32 @@ anchor_bottom = 0.18
 grow_horizontal = 2
 
 [node name="backgroundBar" type="ColorRect" parent="pointsControl"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0.266575, 0.266575, 0.266575, 1)
 
-[node name="scoreBar" type="Polygon2D" parent="pointsControl"]
-visible = false
-color = Color(1, 0.752941, 0, 1)
-polygon = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)
-
-[node name="ProgressBar" type="ProgressBar" parent="pointsControl"]
+[node name="textureProgressBar" parent="pointsControl" instance=ExtResource("2_4r3lk")]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.02
-anchor_top = 0.05
-anchor_right = 0.98
-anchor_bottom = 0.95
-max_value = 8.0
-step = 1.0
-show_percentage = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -257.5
+offset_top = -20.0
+offset_right = 257.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="hiveControl" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.3
+anchor_top = 0.318
+anchor_right = 0.7
+anchor_bottom = 0.727
 
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]

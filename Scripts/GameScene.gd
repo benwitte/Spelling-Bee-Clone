@@ -34,7 +34,7 @@ var maxScore := 0
 
 var speed := 0.05
 
-var scoreTier := ""
+var newTier := ""
 
 
 
@@ -75,6 +75,10 @@ func _ready():
 	await get_tree().process_frame
 	$LineEdit.grab_focus()
 	
+	
+	
+	#var tween = get_tree().create_tween()
+	#tween.tween_property(self, "value", 10, .7).set_trans(Tween.TRANS_QUAD)
 
 	
 
@@ -86,7 +90,9 @@ func _physics_process(_delta):
 	
 	if Input.is_action_just_pressed("ui_text_submit"):
 		var submission := str($LineEdit.text)
-	#if Input.is_key_pressed(KEY_ENTER):
+		var currentTier : String = getTier(score, maxScore)
+		tierAssign(currentTier)
+
 		if submission in todaysWordsArray and not alreadyGuessed.has(submission):
 			print("the submission is in todaysWordsArray")
 			stringLength = submission.length()
@@ -95,9 +101,12 @@ func _physics_process(_delta):
 			score += assignPoints(stringLength, submission)
 			print(score)
 			print(float(score)/float(maxScore))
-			scoreTier = getTier(score, maxScore)
-			tierAssign(scoreTier, speed, _delta)
-			print($pointsControl/scoreBar.polygon)
+			newTier = getTier(score, maxScore)
+			if checkTier(currentTier, newTier) == true:
+				var x : int = tierAssign(newTier)
+				$pointsControl/textureProgressBar.progressBar(GlobalVars.arrayBars[x])
+			else :
+				pass
 		elif submission in alreadyGuessed:
 			print("already guessed")
 			$LineEdit.text = ""
@@ -138,51 +147,52 @@ func getTier(currentScore, possibleScore):
 		tier = "Genius"
 	return tier
 
+func checkTier(currTier, _newTier):
+	if currTier != _newTier:
+		return true
+	else:
+		return false
+		
 	
 
 # Determines how close player is to winning
 
-func tierAssign(tier, speedVar, delta):
-	var newtier : float = $pointsControl.size.x/8.0
-	var barHeight : float = $pointsControl.size.y
-	var barLength := 0.0
+func tierAssign(tier):
+	var x := 0
 	match tier:
 		"Beginner":
 			print("0" + tier)
-			print(newtier)
-			var tween = get_tree().create_tween()
-			tween.tween_property($pointsControl/ProgressBar, "Value", 1, 1)#.set_trans(Tween.TRANS_QUAD)
-			#while barLength < newtier:
-				#barLength += speedVar * delta
-				##$pointsControl/scoreBar.set_polygon(PackedVector2Array([Vector2(0, 0),
-								  ##Vector2(barLength, 0),
-								  ##Vector2(barLength, barHeight),
-								  ##Vector2(0, barHeight)
-								##]))
-				#$pointsControl/scoreBar.polygon = PackedVector2Array([Vector2(0, 0),
-								  #Vector2(barLength, 0),
-								  #Vector2(barLength, barHeight),
-								  #Vector2(0, barHeight)
-								#])
 		"Good Start":
 			print("1" + tier)
-			#while $pointsControl/scoreBar.anchor_right < barLength:
-				##$pointsControl/scoreBar.anchor_right = barLength
-				#$pointsControl/scoreBar.transform().x += speedVar
+			return x
 		"Moving Up":
 			print("2" + tier)
+			x = 1
+			return x
 		"Good":
 			print("3" + tier)
+			x = 2
+			return x
 		"Solid":
 			print("4" + tier)
+			x = 3
+			return x
 		"Nice":
 			print("5" + tier)
+			x = 4
+			return x
 		"Great":
 			print("6" + tier)
+			x = 5
+			return x
 		"Amazing":
 			print("7" + tier)
+			x = 6
+			return x
 		"Genius":
 			print("8" + tier)
+			x = 7
+			return x
 
 
 

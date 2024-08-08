@@ -1,12 +1,17 @@
-extends ProgressBar
+extends Control
+
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var tween = get_tree().create_tween()
-	tween.tween_property(self, "value", 10, .7).set_trans(Tween.TRANS_QUAD)
+	#progressBar($TextureProgressBar1)
+	for child in get_children():
+		GlobalVars.arrayBars.append(child)
+	GlobalVars.arrayBars.pop_front()
+	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+
+func progressBar(childnode):
+	childnode.updateProgress()
+
