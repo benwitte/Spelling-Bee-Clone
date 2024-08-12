@@ -7,7 +7,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	#_on_pressed()
 	pass
 
@@ -20,3 +20,6 @@ func _on_pressed():
 func _on_button_down():
 	print("down")
 	pass # Replace with function body.
+	
+func setLetter(letter):
+	self.get_child(0).text = letter

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ceclpxr2grtwr"]
+[gd_scene load_steps=4 format=3 uid="uid://ceclpxr2grtwr"]
 
 [ext_resource type="Script" path="res://Scripts/GameScene.gd" id="1_dcm61"]
 [ext_resource type="PackedScene" uid="uid://dao1t6ynvr7je" path="res://Assets/textureProgressBar.tscn" id="2_4r3lk"]
+[ext_resource type="PackedScene" uid="uid://b6rjphyj8eh1o" path="res://Assets/hiveControl.tscn" id="3_p1eqw"]
 
 [node name="GameScene" type="Control"]
 layout_mode = 3
@@ -30,7 +31,6 @@ anchor_right = 0.5
 anchor_bottom = 0.2
 offset_left = -128.0
 offset_right = 128.0
-offset_bottom = 31.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/caret_color = Color(1, 0.752941, 0, 1)
@@ -66,11 +66,12 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="hiveControl" type="Control" parent="."]
+[node name="hiveControl" parent="." instance=ExtResource("3_p1eqw")]
 layout_mode = 1
-anchor_left = 0.3
-anchor_top = 0.318
-anchor_right = 0.7
-anchor_bottom = 0.727
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.4
+anchor_right = 0.9
+anchor_bottom = 0.9
 
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]

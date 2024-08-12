@@ -1,41 +1,8 @@
 extends Control
 
-
-#var pangramPath := "res://Data/pangramDictionary.json"
-#var json_as_text = FileAccess.get_file_as_string(file)
-#var pangramDict = JSON.parse_string(file)
-#if json_as_dict:
-	#print(json_as_dict)
-var testPath := "res://Data/sameUniqueLettersTest.json"
-
-var fullDictPath := "res://Data/fullDictionary.json"
-
-var allPangramsDict := []
-
-var pangramMain := {}
-
-var totalPangrams := []
-
-var todaysDictionary := []
-
-var todaysWordsArray := []
-
-var keyLetter := ""
-
-var alreadyGuessed := []
-
-var score := 0
-
-var positionDictionary := {}
-
-var stringLength := 0
-
-var maxScore := 0
-
 var speed := 0.05
 
-var newTier := ""
-
+var otherLetters := []
 
 
 
@@ -47,35 +14,37 @@ func _ready():
 	
 	
 # Read Full Dictionary JSON
-	var fullDictionaryFile := FileAccess.open(fullDictPath, FileAccess.READ)
-	var fullParsedFile = JSON.parse_string(fullDictionaryFile.get_as_text())
+	filterPangrams(GlobalVars.fullParsedFile, GlobalVars.allPangramsDict)
 	
-	filterPangrams(fullParsedFile, allPangramsDict)
+	GlobalVars.pangramMain = getNewPangram(GlobalVars.allPangramsDict)
 	
-	pangramMain = getNewPangram(allPangramsDict)
+	GlobalVars.keyLetter = getkeyLetter(GlobalVars.pangramMain.uniqueChars)
 	
-	keyLetter = getkeyLetter(pangramMain.uniqueChars)
+	getOtherLetters(GlobalVars.pangramMain.uniqueChars, GlobalVars.keyLetter, otherLetters)
 	
-	getTodaysDictionary(fullParsedFile, pangramMain.uniqueChars, keyLetter, todaysWordsArray, totalPangrams)
 	
-	maxScore = calculatePossiblePoints(todaysWordsArray, totalPangrams)
+	getTodaysDictionary(GlobalVars.fullParsedFile, GlobalVars.pangramMain.uniqueChars, GlobalVars.keyLetter, GlobalVars.todaysWordsArray, GlobalVars.totalPangrams)
 	
-	# Create a dictionary of each word today and their position in todaysWordsArray
-	#getArrayPosition(todaysWordsArray, positionDictionary)
+	GlobalVars.maxScore = calculatePossiblePoints(GlobalVars.todaysWordsArray, GlobalVars.totalPangrams)
 	
-	print("center Letter: " + keyLetter)
 	
-	print("pangram: " + pangramMain.word)
+	print("center Letter: " + GlobalVars.keyLetter)
 	
-	print("total pangrams: " + str(totalPangrams))
-	print("total words: " + str(todaysWordsArray))
-	print("count of words: " + str(todaysWordsArray.size()))
-	print("max score: " + str(maxScore))
+	print("pangram: " + GlobalVars.pangramMain.word)
+	
+	print("total pangrams: " + str(GlobalVars.totalPangrams))
+	print("total words: " + str(GlobalVars.todaysWordsArray))
+	print("count of words: " + str(GlobalVars.todaysWordsArray.size()))
+	print("max score: " + str(GlobalVars.maxScore))
+	
+	
+	
+	$hiveControl.setLetters(GlobalVars.keyLetter, otherLetters)
 	
 	await get_tree().process_frame
 	$LineEdit.grab_focus()
 	
-	
+
 	
 	#var tween = get_tree().create_tween()
 	#tween.tween_property(self, "value", 10, .7).set_trans(Tween.TRANS_QUAD)
@@ -85,29 +54,29 @@ func _ready():
 
 
 
-func _physics_process(_delta):
+func _process(_delta):
 	
 	
 	if Input.is_action_just_pressed("ui_text_submit"):
 		var submission := str($LineEdit.text)
-		var currentTier : String = getTier(score, maxScore)
+		var currentTier : String = getTier(GlobalVars.score, GlobalVars.maxScore)
 		tierAssign(currentTier)
 
-		if submission in todaysWordsArray and not alreadyGuessed.has(submission):
+		if submission in GlobalVars.todaysWordsArray and not GlobalVars.alreadyGuessed.has(submission):
 			print("the submission is in todaysWordsArray")
-			stringLength = submission.length()
-			alreadyGuessed.append(submission)
+			GlobalVars.stringLength = submission.length()
+			GlobalVars.alreadyGuessed.append(submission)
 			$LineEdit.text = ""
-			score += assignPoints(stringLength, submission)
-			print(score)
-			print(float(score)/float(maxScore))
-			newTier = getTier(score, maxScore)
-			if checkTier(currentTier, newTier) == true:
-				var x : int = tierAssign(newTier)
+			GlobalVars.score += assignPoints(GlobalVars.stringLength, submission)
+			print(GlobalVars.score)
+			print(float(GlobalVars.score)/float(GlobalVars.maxScore))
+			GlobalVars.newTier = getTier(GlobalVars.score, GlobalVars.maxScore)
+			if checkTier(currentTier, GlobalVars.newTier) == true:
+				var x : int = tierAssign(GlobalVars.newTier)
 				$pointsControl/textureProgressBar.progressBar(GlobalVars.arrayBars[x])
 			else :
 				pass
-		elif submission in alreadyGuessed:
+		elif submission in GlobalVars.alreadyGuessed:
 			print("already guessed")
 			$LineEdit.text = ""
 		else:
@@ -216,6 +185,13 @@ func getNewPangram(jsonArray):
 # Randomly picks the keyLetter from the chosen pangram
 func getkeyLetter(pangramCharsArray):
 	return pangramCharsArray[randi() % pangramCharsArray.size()]
+	
+func getOtherLetters(pangramCharsArray, _keyLetter, emptyArray):
+	for i in pangramCharsArray.size():
+		if pangramCharsArray[i] != _keyLetter:
+			emptyArray.append(pangramCharsArray[i])
+		else:
+			pass
 
 
 
@@ -253,7 +229,7 @@ func assignPoints(strLength, word):
 	var points := 0
 	if strLength == 4:
 		points = 1
-	elif strLength >= 7 and totalPangrams.has(word):
+	elif strLength >= 7 and GlobalVars.totalPangrams.has(word):
 		points = strLength + 7
 		print("pangram!")
 	else :
@@ -262,14 +238,11 @@ func assignPoints(strLength, word):
 
 func calculatePossiblePoints(array, pangramArray):
 	var total : int = pangramArray.size() * 7
-	print("total pangram bonus points: " + str(total))
 	for i in array.size():
 		if array[i].length() > 4:
 			total += array[i].length()
-			print(str(i) + ": " + str("1 point"))
 		else:
 			total += 1
-			print(str(i) + ": " + str(array[i].length()) + " points")
 	return total
 
 
