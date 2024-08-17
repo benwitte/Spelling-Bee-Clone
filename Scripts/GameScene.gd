@@ -4,6 +4,7 @@ var speed := 0.05
 
 var otherLetters := []
 
+var ourSize : Vector2 = self.size
 
 
 
@@ -12,6 +13,7 @@ var otherLetters := []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	$hiveControl.hiveSizeChange()
 	
 # Read Full Dictionary JSON
 	filterPangrams(GlobalVars.fullParsedFile, GlobalVars.allPangramsDict)
@@ -37,7 +39,8 @@ func _ready():
 	print("count of words: " + str(GlobalVars.todaysWordsArray.size()))
 	print("max score: " + str(GlobalVars.maxScore))
 	
-	
+	tierAssign(GlobalVars.currentTier)
+	print("tier array" + str(GlobalVars.arrayBars[0]))
 	
 	$hiveControl.setLetters(GlobalVars.keyLetter, otherLetters)
 	
@@ -45,36 +48,88 @@ func _ready():
 	$LineEdit.grab_focus()
 	
 
-	
-	#var tween = get_tree().create_tween()
-	#tween.tween_property(self, "value", 10, .7).set_trans(Tween.TRANS_QUAD)
-
-	
 
 
 
 
 func _process(_delta):
 	
+	if self.size != ourSize:
+		ourSize = self.size
+		$hiveControl.hiveSizeChange()
 	
+	# when player clicks enter
 	if Input.is_action_just_pressed("ui_text_submit"):
 		var submission := str($LineEdit.text)
-		var currentTier : String = getTier(GlobalVars.score, GlobalVars.maxScore)
-		tierAssign(currentTier)
-
+		# assign a string to currentTier based on getTier function.
+		# getTier calculates score as a percentage and assigns a tier
+		# as a string
+		GlobalVars.currentTier = getTier(GlobalVars.score, GlobalVars.maxScore)
+		
+		# tierAssign is a matching function, where each possible tier string is
+		# associated with an integer. These integers are then used in the 
+		#textureProgressBar array to determine which progress bar to fill
+		tierAssign(GlobalVars.currentTier)
+		
+		# new word check
 		if submission in GlobalVars.todaysWordsArray and not GlobalVars.alreadyGuessed.has(submission):
-			print("the submission is in todaysWordsArray")
+			
 			GlobalVars.stringLength = submission.length()
+			
+			# add the word to alreadyGuessed array of strings
 			GlobalVars.alreadyGuessed.append(submission)
+			
+			# reset LineEdit to empty
 			$LineEdit.text = ""
+			
+			# adds points based on the length of the word. also checks if the
+			# submission is a pangram
 			GlobalVars.score += assignPoints(GlobalVars.stringLength, submission)
+			
 			print(GlobalVars.score)
 			print(float(GlobalVars.score)/float(GlobalVars.maxScore))
+			
+			# gets the tier string based on updated score percentage
 			GlobalVars.newTier = getTier(GlobalVars.score, GlobalVars.maxScore)
-			if checkTier(currentTier, GlobalVars.newTier) == true:
-				var x : int = tierAssign(GlobalVars.newTier)
-				$pointsControl/textureProgressBar.progressBar(GlobalVars.arrayBars[x])
+			print(GlobalVars.newTier)
+			
+			# checking if our tier string has changed. returns bool
+			if checkTier(GlobalVars.currentTier, GlobalVars.newTier) == true:
+				
+				# assigns the new tier as integer x. this is used in arrayBars 
+				var x : int = tierAssign(GlobalVars.newTier) 
+				
+				# since we're changing tiers (and textrureProgressBars), 
+				# we need to clear the score from the old progress tier.
+				$textureProgressBar.clearOldScore(GlobalVars.arrayBars[x-1])
+				
+				# in the unusual cases where a score results in multiple tier
+				# increases, this logic tells the app to fill the progress bars
+				# between the old tier and the new tier. it does this by making
+				# sure each tier's value is 100 (aka progress bar is yellow)
+				# if it isn't, it fills it in. If it is already filled in,
+				# then it skips that tier
+				for i in x:
+					if GlobalVars.arrayBars[i].value != 100:
+						$textureProgressBar.quickUpdate(GlobalVars.arrayBars[i])
+						$textureProgressBar.clearOldScore(GlobalVars.arrayBars[i])
+						await get_tree().create_timer(.1).timeout
+					else:
+						pass
+						
+				#$textureProgressBar.clearOldScore(GlobalVars.arrayBars[x-1])
+				$textureProgressBar.progressBar(GlobalVars.arrayBars[x])
+				await get_tree().create_timer(.6).timeout
+				
+				# now time to add the new score to the new tier
+				$textureProgressBar.updateNewScore(GlobalVars.arrayBars[x])
+				$tierBox/tierText.updateTierText()
+				
 			else :
+				
+				
+				var x : int = tierAssign(GlobalVars.newTier) 
+				$textureProgressBar.updateNewScore(GlobalVars.arrayBars[x])
 				pass
 		elif submission in GlobalVars.alreadyGuessed:
 			print("already guessed")
@@ -87,7 +142,7 @@ func _process(_delta):
 		
 
 #func _physics_process(delta):
-	##if scoreBar length is less than current tier status, animate bar to fill to new status
+	##if textureProgressBar length is less than current tier status, animate bar to fill to new status
 	#pass
 
 ############## FUNCTIONS ###############
@@ -130,37 +185,39 @@ func tierAssign(tier):
 	var x := 0
 	match tier:
 		"Beginner":
-			print("0" + tier)
-		"Good Start":
-			print("1" + tier)
 			return x
-		"Moving Up":
-			print("2" + tier)
+			#print("0" + tier)
+		"Good Start":
+			#print("1" + tier)
 			x = 1
 			return x
-		"Good":
-			print("3" + tier)
+		"Moving Up":
+			#print("2" + tier)
 			x = 2
 			return x
-		"Solid":
-			print("4" + tier)
+		"Good":
+			#print("3" + tier)
 			x = 3
 			return x
-		"Nice":
-			print("5" + tier)
+		"Solid":
+			#print("4" + tier)
 			x = 4
 			return x
-		"Great":
-			print("6" + tier)
+		"Nice":
+			#print("5" + tier)
 			x = 5
 			return x
-		"Amazing":
-			print("7" + tier)
+		"Great":
+			#print("6" + tier)
 			x = 6
 			return x
-		"Genius":
-			print("8" + tier)
+		"Amazing":
+			#print("7" + tier)
 			x = 7
+			return x
+		"Genius":
+			#print("8" + tier)
+			x = 8
 			return x
 
 

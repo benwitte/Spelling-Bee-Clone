@@ -35,6 +35,7 @@ var newTier := ""
 
 var pangramChosen = false
 
+var currentTier := "Beginner"
 
 
 # Called when the node enters the scene tree for the first time.

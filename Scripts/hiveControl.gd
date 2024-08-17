@@ -2,7 +2,11 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	pass
 	
+	
+
+func hiveSizeChange():
 	# make each child node a variable to reduce visual confusion
 	var centerHex : TextureButton = $centerHex
 	var hex0 : TextureButton = $hex0
