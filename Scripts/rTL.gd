@@ -8,11 +8,12 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	var fontSize = int(self.size.x/1.8)
-	#self.get_theme_font_size("theme_override_font_sizes/normal_font_size")
-	#fontSize
-	self.add_theme_font_size_override("normal_font_size", fontSize)
+	
 	#self.has_theme_font_size_override()
 	#add_theme_font_size_override("theme_override_font_sizes/normal_font_size", int(self.size.x))
 	#print(self.get_theme_font_size("normal_font_size"))
 	pass
+
+func sizeChange():
+	var fontSize = int(self.size.x/1.8)
+	self.add_theme_font_size_override("normal_font_size", fontSize)

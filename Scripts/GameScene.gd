@@ -17,34 +17,42 @@ func _ready():
 	
 # Read Full Dictionary JSON
 	filterPangrams(GlobalVars.fullParsedFile, GlobalVars.allPangramsDict)
-	
+# set the pangram
 	GlobalVars.pangramMain = getNewPangram(GlobalVars.allPangramsDict)
 	
+# set the center letter
 	GlobalVars.keyLetter = getkeyLetter(GlobalVars.pangramMain.uniqueChars)
-	
+
+# put the 6 other letters in an array called otherLetters
 	getOtherLetters(GlobalVars.pangramMain.uniqueChars, GlobalVars.keyLetter, otherLetters)
 	
-	
+# gets all words that can be spelled with today's uniqueChars
+# returns all pangrams to array called totalPangrams
+# returns all non-pangrams to array called todaysWordsArray
 	getTodaysDictionary(GlobalVars.fullParsedFile, GlobalVars.pangramMain.uniqueChars, GlobalVars.keyLetter, GlobalVars.todaysWordsArray, GlobalVars.totalPangrams)
 	
+# calculate the max possible score for today
 	GlobalVars.maxScore = calculatePossiblePoints(GlobalVars.todaysWordsArray, GlobalVars.totalPangrams)
 	
 	
 	print("center Letter: " + GlobalVars.keyLetter)
 	
-	print("pangram: " + GlobalVars.pangramMain.word)
+	#print("pangram: " + GlobalVars.pangramMain.word)
 	
 	print("total pangrams: " + str(GlobalVars.totalPangrams))
 	print("total words: " + str(GlobalVars.todaysWordsArray))
-	print("count of words: " + str(GlobalVars.todaysWordsArray.size()))
-	print("max score: " + str(GlobalVars.maxScore))
+	#print("count of words: " + str(GlobalVars.todaysWordsArray.size()))
+	#print("max score: " + str(GlobalVars.maxScore))
 	
-	tierAssign(GlobalVars.currentTier)
-	print("tier array" + str(GlobalVars.arrayBars[0]))
+# assign the current tier. i believe this is unnecessary
+	#tierAssign(GlobalVars.currentTier)
 	
+# assign the center letter to the center hex in hiveControl
+# assign the other 6 letters to the other 6 hexagons
 	$hiveControl.setLetters(GlobalVars.keyLetter, otherLetters)
 	
-	await get_tree().process_frame
+	# at some point this await function was useful. now i'm not sure if it is anymore...
+	#await get_tree().process_frame
 	$LineEdit.grab_focus()
 	
 
@@ -123,7 +131,7 @@ func _process(_delta):
 				
 				# now time to add the new score to the new tier
 				$textureProgressBar.updateNewScore(GlobalVars.arrayBars[x])
-				$tierBox/tierText.updateTierText()
+				$tierBox/Label.updateTierText()
 				
 			else :
 				
