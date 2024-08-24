@@ -38,6 +38,8 @@ func hiveSizeChange():
 	
 	for i in hexes.size():
 		hexes[i].size = hexSize
+		# also changes label font size within each hex
+		hexes[i].get_child(0).sizeChange(hiveWidth, 30)
 
 	# set the position of each hex relative to the center hex
 	centerHex.position = Vector2(hiveWidth/2, hiveHeight/2) - $centerHex.size/2
@@ -47,6 +49,9 @@ func hiveSizeChange():
 	hex3.position = centerHex.position + verticalOffset
 	hex4.position = centerHex.position - diagonalOffsetLeftRight
 	hex5.position = centerHex.position + diagonalOffsetRightLeft
+	
+	# also update letter size
+	
 
 	pass
 	

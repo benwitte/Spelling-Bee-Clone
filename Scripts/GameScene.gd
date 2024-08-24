@@ -131,7 +131,7 @@ func _process(_delta):
 				
 				# now time to add the new score to the new tier
 				$textureProgressBar.updateNewScore(GlobalVars.arrayBars[x])
-				$tierBox/Label.updateTierText()
+				$Label.updateTierText()
 				
 			else :
 				
