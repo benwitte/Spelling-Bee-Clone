@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://ceclpxr2grtwr"]
+[gd_scene load_steps=7 format=3 uid="uid://ceclpxr2grtwr"]
 
 [ext_resource type="Script" path="res://Scripts/GameScene.gd" id="1_dcm61"]
 [ext_resource type="PackedScene" uid="uid://b6rjphyj8eh1o" path="res://Assets/hiveControl.tscn" id="3_p1eqw"]
 [ext_resource type="PackedScene" uid="uid://dao1t6ynvr7je" path="res://Assets/textureProgressBar.tscn" id="3_p5ryg"]
 [ext_resource type="PackedScene" uid="uid://b8o68e2arn01o" path="res://Assets/tier.tscn" id="4_o7it2"]
+[ext_resource type="PackedScene" uid="uid://s7w51tamdej4" path="res://Assets/pointsPopup.tscn" id="5_8r3cr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irsn8"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -66,6 +67,14 @@ anchor_left = 0.1
 anchor_top = 0.08
 anchor_right = 0.2
 anchor_bottom = 0.15
+
+[node name="pointsPopup" parent="." instance=ExtResource("5_8r3cr")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 0.25
+anchor_right = 0.55
+anchor_bottom = 0.328
 
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
 

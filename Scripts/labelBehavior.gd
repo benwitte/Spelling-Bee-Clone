@@ -1,7 +1,14 @@
 extends Label
 
+var width : float = 0.0
+
+func _ready():
+	width = self.size.x
+	
 func _process(_delta):
-	sizeChange()
+	if width != self.size.x:
+		width = self.size.x
+		sizeChange()
 
 func updateTierText():
 	self.text = GlobalVars.newTier
@@ -10,7 +17,7 @@ func updateTierText():
 #does anything different than what already happens in the gamescene (possibly
 #automatically??)
 func sizeChange():
-	var fontSize = int(self.size.x/5)
+	var fontSize = int(width/6)
 	self.add_theme_font_size_override("font_size", fontSize)
 	#while self.theme_override_fonts.font.get_theme_font("font").get_string_size(self.text, HORIZONTAL_ALIGNMENT_LEFT, -1, self.get_theme_font_size("font_size")):
 		#fontSize -= 1

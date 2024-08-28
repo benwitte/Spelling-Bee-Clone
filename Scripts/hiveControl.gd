@@ -32,7 +32,9 @@ func hiveSizeChange():
 		diagonalOffsetLeftRight = Vector2(hiveHeight/3.5, hiveHeight/6)
 		diagonalOffsetRightLeft = Vector2(hiveHeight/-3.5, hiveHeight/6)
 	else:
-		pass
+		verticalOffset = Vector2(0, hiveHeight/4)
+		diagonalOffsetLeftRight = Vector2(hiveHeight/5, hiveHeight/8.5)
+		diagonalOffsetRightLeft = Vector2(hiveHeight/-5, hiveHeight/8.5)
 	
 	var hexSize : Vector2 = Vector2(offset * hiveWidth/3, offset * hiveHeight/3)
 	

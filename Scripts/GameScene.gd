@@ -101,6 +101,8 @@ func _process(_delta):
 			GlobalVars.newTier = getTier(GlobalVars.score, GlobalVars.maxScore)
 			print(GlobalVars.newTier)
 			
+			$pointsPopup.display()
+			
 			# checking if our tier string has changed. returns bool
 			if checkTier(GlobalVars.currentTier, GlobalVars.newTier) == true:
 				
