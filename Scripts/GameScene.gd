@@ -92,7 +92,8 @@ func _process(_delta):
 			
 			# adds points based on the length of the word. also checks if the
 			# submission is a pangram
-			GlobalVars.score += assignPoints(GlobalVars.stringLength, submission)
+			GlobalVars.wordScore = assignPoints(GlobalVars.stringLength, submission)
+			GlobalVars.score += GlobalVars.wordScore
 			
 			print(GlobalVars.score)
 			print(float(GlobalVars.score)/float(GlobalVars.maxScore))
@@ -280,27 +281,19 @@ func getTodaysDictionary(fullJsonArray, pangramChars, mainLetter, wordsArray, pa
 	return
 
 
-
-
-# A function designed to create a dictionary of words and their position relative
-# to the newly edited array todaysWordsArray
-#func getArrayPosition(todaysArray, dictionary):
-	#for i in todaysArray.size():
-		#dictionary[(todaysArray[i])] = i
-	#return
-
-
 	
 # Assigning points, including extra for pangrams
 func assignPoints(strLength, word):
 	var points := 0
 	if strLength == 4:
 		points = 1
+		GlobalVars.isPangram = false
 	elif strLength >= 7 and GlobalVars.totalPangrams.has(word):
 		points = strLength + 7
-		print("pangram!")
+		GlobalVars.isPangram = true
 	else :
 		points = strLength
+		GlobalVars.isPangram = false
 	return points
 
 func calculatePossiblePoints(array, pangramArray):

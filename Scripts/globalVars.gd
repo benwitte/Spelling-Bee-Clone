@@ -37,6 +37,10 @@ var pangramChosen = false
 
 var currentTier := "Beginner"
 
+var wordScore := 0
+
+var isPangram := false
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

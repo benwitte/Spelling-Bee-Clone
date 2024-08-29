@@ -4,8 +4,6 @@
 
 extends TextureRect
 
-var isPangram = true
-
 var width : float = 0.0
 
 var startPosition : Vector2 = Vector2(0,0)
@@ -21,7 +19,6 @@ func _ready():
 	self.visible = false
 	width = self.size.x
 	sizeChange()
-	chooseTexture()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -39,16 +36,19 @@ func _physics_process(delta):
 	#else:
 	if self.visibility_changed and self.visible == false:
 		self.position = startPosition
+		velocity = -200.0
 	pass
 
 func chooseTexture():
-	if isPangram == true:
+	if GlobalVars.isPangram == true:
 		self.texture = load("res://Assets/textures/pangram_pts_texture.svg")
 	else:
+		self.texture = load("res://Assets/textures/pts_texture.svg")
 		pass
 
 func display():
-	$pointsLabel.text = "+ " + str(GlobalVars.stringLength)
+	$pointsLabel.text = "+ " + str(GlobalVars.wordScore)
+	chooseTexture()
 	self.visible = true
 	await get_tree().create_timer(.5).timeout
 	self.visible = false
