@@ -19,6 +19,8 @@ var todaysWordsArray := []
 
 var keyLetter := ""
 
+var guessedSubArray := []
+
 var alreadyGuessed := []
 
 var score := 0
@@ -40,6 +42,8 @@ var currentTier := "Beginner"
 var wordScore := 0
 
 var isPangram := false
+
+var tempArray := ["time", "word", "guess", "text"]
 
 
 # Called when the node enters the scene tree for the first time.

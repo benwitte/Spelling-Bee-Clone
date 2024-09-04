@@ -14,6 +14,7 @@ var ourSize : Vector2 = self.size
 func _ready():
 	
 	$hiveControl.hiveSizeChange()
+	resizeLineEditText()
 	
 # Read Full Dictionary JSON
 	filterPangrams(GlobalVars.fullParsedFile, GlobalVars.allPangramsDict)
@@ -44,8 +45,6 @@ func _ready():
 	#print("count of words: " + str(GlobalVars.todaysWordsArray.size()))
 	#print("max score: " + str(GlobalVars.maxScore))
 	
-# assign the current tier. i believe this is unnecessary
-	#tierAssign(GlobalVars.currentTier)
 	
 # assign the center letter to the center hex in hiveControl
 # assign the other 6 letters to the other 6 hexagons
@@ -65,6 +64,8 @@ func _process(_delta):
 	if self.size != ourSize:
 		ourSize = self.size
 		$hiveControl.hiveSizeChange()
+		resizeLineEditText()
+		
 	
 	# when player clicks enter
 	if Input.is_action_just_pressed("ui_text_submit"):
@@ -319,3 +320,7 @@ func calculatePossiblePoints(array, pangramArray):
 #Amazing	50%
 #Genius	70%
 #Queen Bee (hidden rank)	100%
+
+func resizeLineEditText():
+	var height : int = $LineEdit.size.y
+	$LineEdit.set("theme_override_font_sizes/font_size", height - 10)
