@@ -38,12 +38,10 @@ func _ready():
 	
 	print("center Letter: " + GlobalVars.keyLetter)
 	
-	#print("pangram: " + GlobalVars.pangramMain.word)
 	
 	print("total pangrams: " + str(GlobalVars.totalPangrams))
 	print("total words: " + str(GlobalVars.todaysWordsArray))
-	#print("count of words: " + str(GlobalVars.todaysWordsArray.size()))
-	#print("max score: " + str(GlobalVars.maxScore))
+
 	
 	
 # assign the center letter to the center hex in hiveControl
@@ -87,6 +85,7 @@ func _process(_delta):
 			
 			# add the word to alreadyGuessed array of strings
 			GlobalVars.alreadyGuessed.append(submission)
+			GlobalVars.alreadyGuessed.sort()
 			
 			# reset LineEdit to empty
 			$LineEdit.text = ""
@@ -96,12 +95,9 @@ func _process(_delta):
 			GlobalVars.wordScore = assignPoints(GlobalVars.stringLength, submission)
 			GlobalVars.score += GlobalVars.wordScore
 			
-			print(GlobalVars.score)
-			print(float(GlobalVars.score)/float(GlobalVars.maxScore))
 			
 			# gets the tier string based on updated score percentage
 			GlobalVars.newTier = getTier(GlobalVars.score, GlobalVars.maxScore)
-			print(GlobalVars.newTier)
 			
 			$pointsPopup.display()
 			
@@ -198,37 +194,28 @@ func tierAssign(tier):
 	match tier:
 		"Beginner":
 			return x
-			#print("0" + tier)
 		"Good Start":
-			#print("1" + tier)
 			x = 1
 			return x
 		"Moving Up":
-			#print("2" + tier)
 			x = 2
 			return x
 		"Good":
-			#print("3" + tier)
 			x = 3
 			return x
 		"Solid":
-			#print("4" + tier)
 			x = 4
 			return x
 		"Nice":
-			#print("5" + tier)
 			x = 5
 			return x
 		"Great":
-			#print("6" + tier)
 			x = 6
 			return x
 		"Amazing":
-			#print("7" + tier)
 			x = 7
 			return x
 		"Genius":
-			#print("8" + tier)
 			x = 8
 			return x
 
