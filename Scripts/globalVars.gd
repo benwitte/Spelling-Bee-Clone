@@ -45,6 +45,12 @@ var isPangram := false
 
 var tempArray := ["time", "word", "guess", "text"]
 
+var quitClicked : bool = false
+
+var settingsCheck : bool = false
+
+var newGame : bool = false
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

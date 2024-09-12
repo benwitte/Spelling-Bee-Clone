@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b8o68e2arn01o" path="res://Assets/tier.tscn" id="4_o7it2"]
 [ext_resource type="PackedScene" uid="uid://s7w51tamdej4" path="res://Assets/pointsPopup.tscn" id="5_8r3cr"]
 [ext_resource type="PackedScene" uid="uid://bktdigot85w7y" path="res://Assets/guessed_words_container.tscn" id="6_mfnhj"]
-[ext_resource type="PackedScene" uid="uid://clc2m28osol88" path="res://Assets/menuBar.tscn" id="8_v1usx"]
+[ext_resource type="PackedScene" uid="uid://ciy8xtvsp73t6" path="res://Assets/unacceptedGuess.tscn" id="9_ixklu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irsn8"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -22,6 +22,7 @@ grow_vertical = 2
 script = ExtResource("1_dcm61")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -88,10 +89,18 @@ anchor_top = 0.2
 anchor_right = 0.97
 anchor_bottom = 0.9
 
-[node name="menuBar" parent="." instance=ExtResource("8_v1usx")]
+[node name="unacceptedGuess" parent="." instance=ExtResource("9_ixklu")]
+visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_bottom = 0.05
+anchor_left = 0.234
+anchor_top = 0.437
+anchor_right = 0.503
+anchor_bottom = 0.535
+offset_left = -0.568024
+offset_top = -0.175995
+offset_right = 0.543945
+offset_bottom = 0.319977
 
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
 

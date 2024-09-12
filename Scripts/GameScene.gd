@@ -7,6 +7,7 @@ var otherLetters := []
 var ourSize : Vector2 = self.size
 
 
+@onready var unaccepted_guess = $unacceptedGuess
 
 
 
@@ -140,12 +141,22 @@ func _process(_delta):
 				$textureProgressBar.updateNewScore(GlobalVars.arrayBars[x])
 				pass
 		elif submission in GlobalVars.alreadyGuessed:
-			print("already guessed")
+			unaccepted_guess.visible = true
+			unaccepted_guess.fillLabel("Already Guessed")
 			$LineEdit.text = ""
+			await get_tree().create_timer(.6).timeout
+			unaccepted_guess.visible = false
+			
 		else:
-			print("the submission is not in todaysWordsArray")
+			unaccepted_guess.visible = true
+			unaccepted_guess.fillLabel("Word Not Recognized")
 			$LineEdit.text = ""
-	
+			await get_tree().create_timer(.6).timeout
+			unaccepted_guess.visible = false
+			
+	if GlobalVars.newTier == "Genius":
+		print("win")
+		
 		
 		
 

@@ -1,6 +1,9 @@
-extends AspectRatioContainer
+extends TextureRect
 
 var barSize : float
+
+@onready var label = $Label
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,6 +15,8 @@ func _ready():
 func _process(_delta):
 	if barSize != self.size.x:
 		barSize = self.size.x
-		$bar/rTL.sizeChange(barSize, 2)
-
+		label.set("theme_override_font_sizes/font_size", self.size.x/3)
 	pass
+
+func fillLabel(inputString):
+	label.text = inputString
