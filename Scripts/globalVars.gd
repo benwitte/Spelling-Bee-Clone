@@ -19,7 +19,7 @@ var todaysWordsArray := []
 
 var keyLetter := ""
 
-var guessedSubArray := []
+#var guessedSubArray := []
 
 var alreadyGuessed := []
 
@@ -43,13 +43,15 @@ var wordScore := 0
 
 var isPangram := false
 
-var tempArray := ["time", "word", "guess", "text"]
+#var tempArray := ["time", "word", "guess", "text"]
 
 var quitClicked : bool = false
 
 var settingsCheck : bool = false
 
 var newGame : bool = false
+
+var startGame : bool = false
 
 
 # Called when the node enters the scene tree for the first time.

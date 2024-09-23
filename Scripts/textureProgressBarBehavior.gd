@@ -1,11 +1,12 @@
 extends AspectRatioContainer
 
 var barSize : Vector2 = Vector2(0,0)
+@onready var r_tl = $bar/rTL
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	barSize = self.size
-	$bar/rTL.sizeChange(barSize.x, 6)
+	r_tl.sizeChange(barSize.x, 6)
 	pass # Replace with function body.
 
 
@@ -14,5 +15,5 @@ func _process(_delta):
 	if barSize != self.size:
 		#print("size change")
 		barSize = self.size
-		$bar/rTL.sizeChange(barSize.x, 6)
+		r_tl.sizeChange(barSize.x, 6)
 	pass

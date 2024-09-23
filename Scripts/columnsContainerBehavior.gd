@@ -45,13 +45,17 @@ func _process(_delta):
 		countWords += 1
 		columnsNeeded = float(GlobalVars.alreadyGuessed.size())/12.0
 		if columnsNeeded > columnsCount:
-			startPoint += 12
+			#startPoint += 12
 			add_child(newColumn.instantiate())
 			setSize(self.get_child(int(columnsCount)))
-			fill(self.get_child(int(columnsCount)), startPoint)
+			#fill(self.get_child(int(columnsCount)), startPoint)
 			columnsCount += 1.0
 		else:
-			fill(self.get_child(int(columnsCount-1)), startPoint)
+			pass
+		for i in self.get_children().size():
+			fill(self.get_child(i), startPoint)
+			startPoint += 12
+	startPoint = 0
 	pass
 
 func setSize(node):
@@ -60,10 +64,13 @@ func setSize(node):
 
 func fill(node, start):
 	children = node.get_children()
-	var i : int = start
-	while i < GlobalVars.alreadyGuessed.size():
-		children[i - start].set("theme_override_font_sizes/font_size", length/(children.size()+4))
-		children[i - start].text = GlobalVars.alreadyGuessed[i]
-		i += 1
+	for i in children.size():
+		children[i].set("theme_override_font_sizes/font_size", length/(children.size()+4))
+		if i + start < GlobalVars.alreadyGuessed.size():
+			print("i:" + str(i))
+			print("array size: " + str(GlobalVars.alreadyGuessed.size()))
+			children[i].text = GlobalVars.alreadyGuessed[i+start]
+			print("appending this word to the column now: ")
+			print(GlobalVars.alreadyGuessed[i])
 		
 	

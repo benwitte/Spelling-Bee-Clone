@@ -10,6 +10,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	if GlobalVars.newGame == true:
+		new_game.visible = false
 	pass
 
 
@@ -29,4 +31,7 @@ func _on_new_game_pressed():
 	GlobalVars.newGame = true
 	#get_tree().change_scene_to_file("res://Scenes/GameScene.tscn")
 	new_game.visible = false
+	#get_tree().change_scene_to_file("res://Scenes/GameScene.tscn")
 	pass # Replace with function body.
+
+

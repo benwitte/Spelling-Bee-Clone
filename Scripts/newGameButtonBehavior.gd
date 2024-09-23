@@ -1,11 +1,10 @@
-extends AspectRatioContainer
+extends Button
 
 var barSize : float
-@onready var r_tl = $bar/rTL
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	barSize = self.size.x
+	barSize = 0	
 	pass # Replace with function body.
 
 
@@ -13,6 +12,5 @@ func _ready():
 func _process(_delta):
 	if barSize != self.size.x:
 		barSize = self.size.x
-		r_tl.sizeChange(barSize, 2)
-
+		self.set("theme_override_font_sizes/font_size", self.size.x/6)
 	pass

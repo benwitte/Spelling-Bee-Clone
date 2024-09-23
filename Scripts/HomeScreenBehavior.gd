@@ -12,7 +12,7 @@ func _process(_delta):
 
 
 func _on_button_pressed():
-	GlobalVars.newGame = true
+	GlobalVars.startGame = true
 	#get_tree().change_scene_to_file("res://Scenes/GameScene.tscn")
 	self.visible = false
 	pass # Replace with function body.

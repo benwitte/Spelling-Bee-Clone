@@ -11,18 +11,13 @@ config_version=5
 [application]
 
 config/name="Spelling Bee Clone"
-run/main_scene="res://Scenes/HomeScreen.tscn"
+run/main_scene="res://Scenes/main.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GlobalVars="*res://Scripts/globalVars.gd"
-
-[display]
-
-window/size/mode=3
-window/size/borderless=true
 
 [rendering]
 

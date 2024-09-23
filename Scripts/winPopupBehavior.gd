@@ -27,7 +27,8 @@ func _process(_delta):
 		label.set("theme_override_font_sizes/font_size", self.size.x/15)
 		new_game_label.set("theme_override_font_sizes/font_size", self.size.x/18)
 		keep_playing_label.set("theme_override_font_sizes/font_size", self.size.x/18)
-	if GlobalVars.currentTier == "Genius":
+	if GlobalVars.newTier == "Genius":
+		await get_tree().create_timer(.4).timeout
 		label.text = winText
 		self.visible = true
 	if GlobalVars.settingsCheck == true:
@@ -41,11 +42,11 @@ func setSeparation():
 func _on_keep_playing_button_pressed():
 	GlobalVars.settingsCheck = false
 	self.visible = false
-	pass # Replace with function body.
+
 
 
 func _on_new_game_button_pressed():
 	GlobalVars.settingsCheck = false
 	self.visible = false
 	GlobalVars.newGame = true
-	pass # Replace with function body.
+	

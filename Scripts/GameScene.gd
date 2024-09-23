@@ -8,14 +8,32 @@ var ourSize : Vector2 = self.size
 
 
 @onready var unaccepted_guess = $unacceptedGuess
+@onready var hive_control = $hiveControl
+@onready var points_popup = $pointsPopup
+@onready var line_edit = $LineEdit
+@onready var texture_progress_bar = $textureProgressBar
+
 
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	$hiveControl.hiveSizeChange()
+	hive_control.hiveSizeChange()
 	resizeLineEditText()
+	
+# Reset all relevant  Variables
+	otherLetters = []
+	GlobalVars.pangramMain = {}
+	GlobalVars.keyLetter = ""
+	GlobalVars.todaysWordsArray = []
+	GlobalVars.totalPangrams = []
+	GlobalVars.score = 0
+	GlobalVars.newTier = ""
+	GlobalVars.currentTier = "Beginner"
+	GlobalVars.alreadyGuessed = []
+
+	
 	
 # Read Full Dictionary JSON
 	filterPangrams(GlobalVars.fullParsedFile, GlobalVars.allPangramsDict)
@@ -47,11 +65,11 @@ func _ready():
 	
 # assign the center letter to the center hex in hiveControl
 # assign the other 6 letters to the other 6 hexagons
-	$hiveControl.setLetters(GlobalVars.keyLetter, otherLetters)
+	hive_control.setLetters(GlobalVars.keyLetter, otherLetters)
 	
 	# at some point this await function was useful. now i'm not sure if it is anymore...
 	#await get_tree().process_frame
-	$LineEdit.grab_focus()
+	line_edit.grab_focus()
 	
 
 
@@ -60,15 +78,18 @@ func _ready():
 
 func _process(_delta):
 	
+	#if GlobalVars.settingsCheck == false:
+			#line_edit.grab_focus()
+	
 	if self.size != ourSize:
 		ourSize = self.size
-		$hiveControl.hiveSizeChange()
+		hive_control.hiveSizeChange()
 		resizeLineEditText()
 		
 	
 	# when player clicks enter
 	if Input.is_action_just_pressed("ui_text_submit"):
-		var submission := str($LineEdit.text)
+		var submission := str(line_edit.text)
 		# assign a string to currentTier based on getTier function.
 		# getTier calculates score as a percentage and assigns a tier
 		# as a string
@@ -86,10 +107,14 @@ func _process(_delta):
 			
 			# add the word to alreadyGuessed array of strings
 			GlobalVars.alreadyGuessed.append(submission)
+			print("appended submission, here is array: ")
+			print(GlobalVars.alreadyGuessed)
 			GlobalVars.alreadyGuessed.sort()
+			print("resorted array: ")
+			print(GlobalVars.alreadyGuessed)
 			
 			# reset LineEdit to empty
-			$LineEdit.text = ""
+			line_edit.text = ""
 			
 			# adds points based on the length of the word. also checks if the
 			# submission is a pangram
@@ -100,17 +125,18 @@ func _process(_delta):
 			# gets the tier string based on updated score percentage
 			GlobalVars.newTier = getTier(GlobalVars.score, GlobalVars.maxScore)
 			
-			$pointsPopup.display()
+			points_popup.display()
 			
 			# checking if our tier string has changed. returns bool
 			if checkTier(GlobalVars.currentTier, GlobalVars.newTier) == true:
 				
 				# assigns the new tier as integer x. this is used in arrayBars 
 				var x : int = tierAssign(GlobalVars.newTier) 
+				print(GlobalVars.arrayBars)
 				
 				# since we're changing tiers (and textrureProgressBars), 
 				# we need to clear the score from the old progress tier.
-				$textureProgressBar.clearOldScore(GlobalVars.arrayBars[x-1])
+				texture_progress_bar.clearOldScore(GlobalVars.arrayBars[x-1])
 				
 				# in the unusual cases where a score results in multiple tier
 				# increases, this logic tells the app to fill the progress bars
@@ -120,37 +146,37 @@ func _process(_delta):
 				# then it skips that tier
 				for i in x:
 					if GlobalVars.arrayBars[i].value != 100:
-						$textureProgressBar.quickUpdate(GlobalVars.arrayBars[i])
-						$textureProgressBar.clearOldScore(GlobalVars.arrayBars[i])
+						texture_progress_bar.quickUpdate(GlobalVars.arrayBars[i])
+						texture_progress_bar.clearOldScore(GlobalVars.arrayBars[i])
 						await get_tree().create_timer(.1).timeout
 					else:
 						pass
 						
-				#$textureProgressBar.clearOldScore(GlobalVars.arrayBars[x-1])
-				$textureProgressBar.progressBar(GlobalVars.arrayBars[x])
+				#texture_progress_bar.clearOldScore(GlobalVars.arrayBars[x-1])
+				texture_progress_bar.progressBar(GlobalVars.arrayBars[x])
 				await get_tree().create_timer(.6).timeout
 				
 				# now time to add the new score to the new tier
-				$textureProgressBar.updateNewScore(GlobalVars.arrayBars[x])
+				texture_progress_bar.updateNewScore(GlobalVars.arrayBars[x])
 				$Label.updateTierText()
 				
 			else :
 				
 				
 				var x : int = tierAssign(GlobalVars.newTier) 
-				$textureProgressBar.updateNewScore(GlobalVars.arrayBars[x])
+				texture_progress_bar.updateNewScore(GlobalVars.arrayBars[x])
 				pass
 		elif submission in GlobalVars.alreadyGuessed:
 			unaccepted_guess.visible = true
 			unaccepted_guess.fillLabel("Already Guessed")
-			$LineEdit.text = ""
+			line_edit.text = ""
 			await get_tree().create_timer(.6).timeout
 			unaccepted_guess.visible = false
 			
 		else:
 			unaccepted_guess.visible = true
 			unaccepted_guess.fillLabel("Word Not Recognized")
-			$LineEdit.text = ""
+			line_edit.text = ""
 			await get_tree().create_timer(.6).timeout
 			unaccepted_guess.visible = false
 			
@@ -320,5 +346,5 @@ func calculatePossiblePoints(array, pangramArray):
 #Queen Bee (hidden rank)	100%
 
 func resizeLineEditText():
-	var height : int = $LineEdit.size.y
-	$LineEdit.set("theme_override_font_sizes/font_size", height - 10)
+	var height : int = line_edit.size.y
+	line_edit.set("theme_override_font_sizes/font_size", height - 10)

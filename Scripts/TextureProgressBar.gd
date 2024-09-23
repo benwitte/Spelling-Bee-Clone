@@ -1,5 +1,6 @@
 extends TextureProgressBar
 
+@onready var r_tl = $rTL
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,7 +18,7 @@ func fastUpdate():
 	tween.tween_property(self, "value", 100, .2).set_trans(Tween.TRANS_QUAD)
 
 func updateScore():
-	$rTL.text  =str(GlobalVars.score)
+	r_tl.text = str(GlobalVars.score)
 	
 func clearScore():
-	$rTL.text = ""
+	r_tl.text = ""

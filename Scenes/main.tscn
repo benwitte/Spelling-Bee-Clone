@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cc2fdb6qmny34"]
+[gd_scene load_steps=4 format=3 uid="uid://cc2fdb6qmny34"]
 
 [ext_resource type="Script" path="res://Scripts/mainBehavior.gd" id="1_4grxw"]
 [ext_resource type="PackedScene" uid="uid://cto25g0jupsrs" path="res://Scenes/ui.tscn" id="1_inhjk"]
+[ext_resource type="Texture2D" uid="uid://d1w28lfjvul4s" path="res://Assets/textures/TEMPpopupContainerTexture.svg" id="3_72oyg"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -22,3 +23,8 @@ grow_vertical = 2
 
 [node name="UI" parent="." instance=ExtResource("1_inhjk")]
 layout_mode = 1
+
+[node name="quitPopup" parent="UI" index="3"]
+texture = ExtResource("3_72oyg")
+
+[editable path="UI"]
