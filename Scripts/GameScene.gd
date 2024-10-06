@@ -7,6 +7,8 @@ var otherLetters := []
 var ourSize : Vector2 = self.size
 
 
+
+
 @onready var unaccepted_guess = $unacceptedGuess
 @onready var hive_control = $hiveControl
 @onready var points_popup = $pointsPopup
@@ -21,6 +23,7 @@ func _ready():
 	
 	hive_control.hiveSizeChange()
 	resizeLineEditText()
+
 	
 # Reset all relevant  Variables
 	otherLetters = []
@@ -78,13 +81,19 @@ func _ready():
 
 func _process(_delta):
 	
-	#if GlobalVars.settingsCheck == false:
-			#line_edit.grab_focus()
+	if GlobalVars.shuffle == true:
+		otherLetters.shuffle()
+		print(otherLetters)
+		print(GlobalVars.keyLetter)
+		hive_control.setLetters(GlobalVars.keyLetter, otherLetters)
+		GlobalVars.shuffle = false
+	
+
 	
 	if self.size != ourSize:
 		ourSize = self.size
 		hive_control.hiveSizeChange()
-		resizeLineEditText()
+		#resizeLineEditText()
 		
 	
 	# when player clicks enter

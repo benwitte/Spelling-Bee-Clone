@@ -24,7 +24,7 @@ grow_vertical = 2
 [node name="UI" parent="." instance=ExtResource("1_inhjk")]
 layout_mode = 1
 
-[node name="quitPopup" parent="UI" index="3"]
+[node name="quitPopup" parent="UI" index="4"]
 texture = ExtResource("3_72oyg")
 
 [editable path="UI"]

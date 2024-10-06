@@ -59,6 +59,6 @@ func hiveSizeChange():
 	
 
 func setLetters(centerLetter, arrOtherLetters):
-	arrOtherLetters.append(centerLetter)
-	for i in self.get_child_count():
+	self.get_child(6).setLetter(centerLetter)
+	for i in self.get_child_count()-1:
 		self.get_child(i).setLetter(arrOtherLetters[i])

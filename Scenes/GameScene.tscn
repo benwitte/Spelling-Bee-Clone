@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://ceclpxr2grtwr"]
+[gd_scene load_steps=12 format=3 uid="uid://ceclpxr2grtwr"]
 
 [ext_resource type="Script" path="res://Scripts/GameScene.gd" id="1_dcm61"]
 [ext_resource type="FontFile" uid="uid://cubbxi3dnp8wy" path="res://Assets/futurawin.ttf" id="2_sojtd"]
+[ext_resource type="Texture2D" uid="uid://c4in08fexyc00" path="res://Assets/textures/TEMPlineEditTexture.svg" id="3_ke42e"]
 [ext_resource type="PackedScene" uid="uid://b6rjphyj8eh1o" path="res://Assets/hiveControl.tscn" id="3_p1eqw"]
 [ext_resource type="PackedScene" uid="uid://dao1t6ynvr7je" path="res://Assets/textureProgressBar.tscn" id="3_p5ryg"]
 [ext_resource type="PackedScene" uid="uid://b8o68e2arn01o" path="res://Assets/tier.tscn" id="4_o7it2"]
@@ -9,8 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://bktdigot85w7y" path="res://Assets/guessed_words_container.tscn" id="6_mfnhj"]
 [ext_resource type="PackedScene" uid="uid://ciy8xtvsp73t6" path="res://Assets/unacceptedGuess.tscn" id="9_ixklu"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irsn8"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_66leb"]
+texture = ExtResource("3_ke42e")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fs8mb"]
+texture = ExtResource("3_ke42e")
 
 [node name="GameScene" type="Control"]
 layout_mode = 3
@@ -45,8 +49,11 @@ grow_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/caret_color = Color(1, 0.752941, 0, 1)
 theme_override_fonts/font = ExtResource("2_sojtd")
-theme_override_styles/normal = SubResource("StyleBoxFlat_irsn8")
+theme_override_styles/normal = SubResource("StyleBoxTexture_66leb")
+theme_override_styles/focus = SubResource("StyleBoxTexture_fs8mb")
 alignment = 1
+context_menu_enabled = false
+virtual_keyboard_enabled = false
 caret_blink = true
 caret_blink_interval = 0.5
 
@@ -56,7 +63,7 @@ anchors_preset = -1
 anchor_left = 0.05
 anchor_top = 0.364
 anchor_right = 0.6
-anchor_bottom = 0.9
+anchor_bottom = 0.85
 
 [node name="textureProgressBar" parent="." instance=ExtResource("3_p5ryg")]
 layout_mode = 1

@@ -3,6 +3,7 @@ extends Control
 var gamepath := preload("res://Scenes/GameScene.tscn")
 
 @onready var new_game = $"UI/New Game"
+@onready var submit_or_shuffle = $UI/submit_or_shuffle
 
 var gameInstance
 
@@ -17,9 +18,11 @@ func _ready():
 func _process(_delta):
 	if get_viewport().gui_get_focus_owner() == null and is_instance_valid(gameInstance)== true:
 		gameInstance.get_child(1).grab_focus()
+		print(gameInstance.get_child(1))
 	if GlobalVars.newGame == true:
 		i = 0
 		new_game.visible = false
+		submit_or_shuffle.visible = true
 		GlobalVars.newGame = false
 		if is_instance_valid(gameInstance):
 			gameInstance.queue_free()

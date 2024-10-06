@@ -53,6 +53,8 @@ var newGame : bool = false
 
 var startGame : bool = false
 
+var shuffle : bool = false
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
